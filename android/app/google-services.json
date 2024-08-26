@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "201316698125",
+    "project_id": "edumedix-8f2bd",
+    "storage_bucket": "edumedix-8f2bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201316698125:android:578474077569125ba3ad44",
+        "android_client_info": {
+          "package_name": "com.example.edu_med"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAN8HkPqFVQ-aVukjh_M_mX_NZX2zTg1qM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201316698125:android:8930f4003996aadea3ad44",
+        "android_client_info": {
+          "package_name": "com.example.edu_medix_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAN8HkPqFVQ-aVukjh_M_mX_NZX2zTg1qM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201316698125:android:68ec6b383547c58da3ad44",
+        "android_client_info": {
+          "package_name": "com.example.edu_medix_app.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAN8HkPqFVQ-aVukjh_M_mX_NZX2zTg1qM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
