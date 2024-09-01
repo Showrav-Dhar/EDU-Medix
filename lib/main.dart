@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:edu_medix_app/Admin/admin_login.dart';
 import 'package:edu_medix_app/pages/bottomnav.dart';
 import 'package:edu_medix_app/pages/home.dart';
 import 'package:edu_medix_app/pages/login.dart';
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: SignUp());
+        home: AdminLogin());
   }
 }
 
