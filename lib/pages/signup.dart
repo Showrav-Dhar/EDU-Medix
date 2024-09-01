@@ -1,6 +1,7 @@
 import 'package:edu_medix_app/pages/bottomnav.dart';
 import 'package:edu_medix_app/pages/login.dart';
 import 'package:edu_medix_app/services/database.dart';
+import 'package:edu_medix_app/services/shared_pref.dart';
 import 'package:edu_medix_app/widget/support_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,11 @@ class _SignUpState extends State<SignUp> {
               style: TextStyle(fontSize: 20.0),
             )));
         String Id = randomAlphaNumeric(10);
+
+        await SharedPreferenceHelper().saveUserEmail(mailcontroller.text);
+        await SharedPreferenceHelper().saveUserId(Id);
+        await SharedPreferenceHelper().saveUserName(namecontroller.text);
+        // await SharedPreferenceHelper().saveUserImage(); // do not have any image - showrav
         Map<String, dynamic> userInfoMap = {
           "Name": namecontroller.text,
           "Email": mailcontroller.text,
