@@ -186,7 +186,7 @@ String email="", password="";
                     ),
                     GestureDetector(
                       onTap: (){
-                        // Navigator.push(context, MaterialPageRoute(builder: (context)=> SignUp()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> SignUp()));
                       },
                       child: Text(
                         "Sign Up",
