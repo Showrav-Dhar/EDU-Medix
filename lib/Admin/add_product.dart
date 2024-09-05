@@ -9,6 +9,16 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
+  String? value;
+
+  final List<String> categoryitem = [
+    'Medicines',
+    'Oinment',
+    'Beverages',
+    'Toiletries',
+    'Medical_Equipment'
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +39,7 @@ class _AddProductState extends State<AddProduct> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Upload The Product Image",
-                style: AppWidget.lightTextFieldStyle()),
+                style: AppWidget.semiboldTextFieldStyle()),
             SizedBox(
               height: 20.0,
             ),
@@ -45,16 +55,70 @@ class _AddProductState extends State<AddProduct> {
             ),
             SizedBox(height: 20.0),
             Text("Upload The Product Name",
-                style: AppWidget.lightTextFieldStyle()),
+                style: AppWidget.semiboldTextFieldStyle()),
             SizedBox(height: 20.0),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(color: Color.fromARGB(255, 175, 194, 198),borderRadius:BorderRadius.circular(20)),
+              decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 168, 225, 237),
+                  borderRadius: BorderRadius.circular(20)),
               child: TextField(
                 decoration: InputDecoration(border: InputBorder.none),
               ),
-            )
+            ),
+            SizedBox(
+              height: 40.0,
+            ),
+            Text(
+              "Product Catagory",
+              style: AppWidget.semiboldTextFieldStyle(),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            Container(
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 168, 225, 237),
+                    borderRadius: BorderRadius.circular(20)),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    items: categoryitem
+                        .map((item) => DropdownMenuItem(
+                            value: item,
+                            child: Text(
+                              item,
+                              style: AppWidget.semiboldTextFieldStyle(),
+                            )))
+                        .toList(),
+                    onChanged: ((value) => setState(() {
+                          this.value = value;
+                        })),
+                    dropdownColor: Colors.white,
+                    hint: Text(
+                      "Select Catagory",
+                      style: AppWidget.lightTextFieldStyle(),
+                    ),
+                    iconSize: 35,
+                    icon: Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.black,
+                    ),
+                    value: value,
+                  ),
+                )),
+            SizedBox(
+              height: 30.0,
+            ),
+            Center(
+                child: ElevatedButton(
+                    onPressed: () {},
+                    child: Text(
+                      "Add Product",
+                      style: TextStyle(fontSize: 20.0),
+                    ))),
           ],
         ),
       ),
