@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:edu_medix_app/services/database.dart';
 import 'package:edu_medix_app/widget/support_widget.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -16,26 +17,41 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
+  final ImagePicker _picker = ImagePicker();
+  File? selectedImage;
+  TextEditingController namecontroller = new TextEditingController();
 
-final ImagePicker _picker = ImagePicker();
-File?  selectedImage;
-TextEditingController namecontroller = new TextEditingController();
-
-Future getImage()async{  
-  var image = await _picker.pickImage(source: ImageSource.gallery);
-  selectedImage = File(image!.path);
-  setState(() {
-    
-  });
-}
-
-uploadItem(){
-  if(selectedImage!=null && namecontroller.text!=""){
-    String addId = randomAlphaNumeric(10);
-    Reference firebase_storageref = FirebaseStorage.instance.ref().child("blogImage").child(addId);
+  Future getImage() async {
+    var image = await _picker.pickImage(source: ImageSource.gallery);
+    selectedImage = File(image!.path);
+    setState(() {});
   }
-}
 
+  uploadItem() async {
+    if (selectedImage != null && namecontroller.text != "") {
+      String addId = randomAlphaNumeric(10);
+      Reference FirebaseStorageRef =
+          FirebaseStorage.instance.ref().child("blogImage").child(addId);
+
+      final UploadTask task = FirebaseStorageRef.putFile(selectedImage!);
+      var dowloadUrl = await (await task).ref.getDownloadURL();
+
+      Map<String, dynamic> addProduct = {
+        "Name": namecontroller.text,
+        "Image": dowloadUrl,
+      };
+      await DatabaseMethods().addProduct(addProduct, value!).then((value) {
+        selectedImage = null;
+        namecontroller.text = "";
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.redAccent,
+            content: Text(
+              "Product is uploaded successfully",
+              style: TextStyle(fontSize: 20.0),
+            )));
+      });
+    }
+  }
 
   String? value;
 
@@ -71,16 +87,33 @@ uploadItem(){
             SizedBox(
               height: 20.0,
             ),
-            Center(
-              child: Container(
-                height: 150,
-                width: 150,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black, width: 2.5),
-                    borderRadius: BorderRadius.circular(20)),
-                child: Icon(Icons.camera_alt),
+            selectedImage==null? GestureDetector(
+              onTap: (){
+                getImage();
+              },
+              child: Center(
+                child: Container(
+                  height: 150,
+                  width: 150,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 2.5),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Icon(Icons.camera_alt),
+                ),
               ),
-            ),
+            ): Material(
+              elevation: 4.0,
+              borderRadius: BorderRadius.circular(20),
+              child: Container(
+                  height: 150,
+                  width: 150,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 2.5),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Image.file(selectedImage!, fit: BoxFit.cover,),
+                ),
+
+            ) ,
             SizedBox(height: 20.0),
             Text("Upload The Product Name",
                 style: AppWidget.semiboldTextFieldStyle()),
@@ -143,7 +176,9 @@ uploadItem(){
             ),
             Center(
                 child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      uploadItem();
+                    },
                     child: Text(
                       "Add Product",
                       style: TextStyle(fontSize: 20.0),
