@@ -87,33 +87,42 @@ class _AddProductState extends State<AddProduct> {
             SizedBox(
               height: 20.0,
             ),
-            selectedImage==null? GestureDetector(
-              onTap: (){
-                getImage();
-              },
-              child: Center(
-                child: Container(
-                  height: 150,
-                  width: 150,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 2.5),
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Icon(Icons.camera_alt),
+            selectedImage == null
+                ? GestureDetector(
+                    onTap: () {
+                      getImage();
+                    },
+                    child: Center(
+                      child: Container(
+                        height: 150,
+                        width: 150,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 2.5),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Icon(Icons.camera_alt),
+                      ),
+                    ),
+                  )
+                : Center(
+                  child: Material(
+                      elevation: 4.0,
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        height: 150,
+                        width: 150,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 2.5),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.file(
+                            selectedImage!,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
                 ),
-              ),
-            ): Material(
-              elevation: 4.0,
-              borderRadius: BorderRadius.circular(20),
-              child: Container(
-                  height: 150,
-                  width: 150,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 2.5),
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Image.file(selectedImage!, fit: BoxFit.cover,),
-                ),
-
-            ) ,
             SizedBox(height: 20.0),
             Text("Upload The Product Name",
                 style: AppWidget.semiboldTextFieldStyle()),
