@@ -78,7 +78,6 @@ class _HomeState extends State<Home> {
 
   List<Map<String, String>> categories = [
     {"image": "images/catagory/medicine.png", "name": "Medicines"},
-    {"image": "images/catagory/Oinment.png", "name": "Oinment"},
     {"image": "images/catagory/Beverages.png", "name": "Beverages"},
     {"image": "images/catagory/Toiletries.png", "name": "Toiletries"},
     {

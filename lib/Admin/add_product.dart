@@ -61,7 +61,6 @@ class _AddProductState extends State<AddProduct> {
 
   final List<String> categoryitem = [
     'Medicines',
-    'Oinment',
     'Beverages',
     'Toiletries',
     'Medical_Equipment'
@@ -171,7 +170,7 @@ class _AddProductState extends State<AddProduct> {
                     borderRadius: BorderRadius.circular(20)),
                 child: TextField(
                   maxLines: 6,
-                  controller: namecontroller,
+                  controller: detailcontroller,
                   decoration: InputDecoration(border: InputBorder.none),
                 ),
               ),
