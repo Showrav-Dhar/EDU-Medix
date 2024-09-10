@@ -1,3 +1,4 @@
+import 'package:edu_medix_app/pages/category_products.dart';
 import 'package:edu_medix_app/widget/support_widget.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
@@ -14,44 +15,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String userName = "User";
   String timeGreeting = "";
   @override
   void initState() {
     super.initState();
     print("initState called"); // Debug print
-    getUserName();
     _updateTimeGreeting();
   }
 
-  // to show username under greetings // not working
-  Future<void> getUserName() async {
-    print("getUserName() called");
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      print("Current user UID: ${user.uid}");
-      try {
-        DocumentSnapshot userData = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .get();
-
-        if (userData.exists) {
-          Map<String, dynamic> data = userData.data() as Map<String, dynamic>;
-          setState(() {
-            userName = data['Name'] ?? "User"; // Note the capital 'N' in 'Name'
-          });
-          print("Username set to: $userName");
-        } else {
-          print("User document does not exist");
-        }
-      } catch (e) {
-        print("Error fetching user data: $e");
-      }
-    } else {
-      print("No user currently signed in");
-    }
-  }
 
   void _updateTimeGreeting() {
     var hour = DateTime.now().hour;
@@ -70,7 +41,6 @@ class _HomeState extends State<Home> {
 
   List catagories = [
     "images/catagory/medicine.png",
-    "images/catagory/Oinment.png",
     "images/catagory/Beverages.png",
     "images/catagory/Toiletries.png",
     "images/catagory/Medical_Equipment.png",
@@ -103,13 +73,9 @@ class _HomeState extends State<Home> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Hey, $userName!",
+                      "Hey,!",
                       style: AppWidget.boldTextFieldStyle(),
                     ),
-                    // Text(
-                    //   "Medication alert: Take now",
-                    //   style: AppWidget.lightTextFieldStyle(),
-                    // ),
                     Text(
                       timeGreeting.isEmpty
                           ? "Greeting placeholder"
@@ -388,36 +354,41 @@ class CatagoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(right: 10),
-      decoration: BoxDecoration(
-        color: Color.fromARGB(255, 172, 205, 237),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      // height: 90,
-      width: 90,
-      // child: Image.asset(
-      //   image,
-      //   fit: BoxFit.contain, // Ensure the image fits
-      // ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            image,
-            height: 60,
-            width: 60,
-            fit: BoxFit.contain,
-          ),
-          SizedBox(height: 5),
-          Text(
-            name,
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> CategoryProduct(catagory: )));
+      },
+      child: Container(
+        margin: EdgeInsets.only(right: 10),
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 172, 205, 237),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        // height: 90,
+        width: 90,
+        // child: Image.asset(
+        //   image,
+        //   fit: BoxFit.contain, // Ensure the image fits
+        // ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              image,
+              height: 60,
+              width: 60,
+              fit: BoxFit.contain,
+            ),
+            SizedBox(height: 5),
+            Text(
+              name,
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
       ),
     );
   }
