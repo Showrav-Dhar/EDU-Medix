@@ -2,7 +2,8 @@ import 'package:edu_medix_app/widget/support_widget.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetails extends StatefulWidget {
-  const ProductDetails({super.key});
+  String image, name, detail, price;
+  ProductDetails({required this.detail, required this.image, required this.name, required this.price});
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
@@ -35,8 +36,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ),
                 ),
                 Center(
-                  child: Image.asset(
-                    "images/Oxymeter.jpeg",
+                  child: Image.network(
+                    widget.image,
                     height: 200,
                   ),
                 ),
@@ -60,11 +61,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Oxymeter",
+                          widget.name,
                           style: AppWidget.boldTextFieldStyle(),
                         ),
                         Text(
-                          "\৳১৫০০",
+                          "\৳"+widget.price,
                           style: TextStyle(
                             color: Color.fromARGB(255, 224, 53, 110),
                             fontSize: 23.0,
@@ -84,7 +85,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       height: 10.0,
                     ),
                     Text(
-                        "Color OLED display, SpO2 and pulse monitoring, and waveform display, low voltage alarm display, auto power-off, accurate readings of blood oxygen saturation and pulse rate."),
+                        widget.detail),
                     SizedBox(
                       height: 90.0,
                     ),

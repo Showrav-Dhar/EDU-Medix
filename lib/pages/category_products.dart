@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:edu_medix_app/pages/product_detail.dart';
 import 'package:edu_medix_app/services/database.dart';
 import 'package:flutter/material.dart';
 
@@ -54,8 +55,8 @@ class CategoryProductState extends State<CategoryProduct> {
                         SizedBox(height: 10.0,),
                         Image.network(
                           ds["Image"],
-                          height: 120,
-                          width: 120,
+                          height: 100,
+                          width: 80,
                           fit: BoxFit.cover,
                         ),
                         SizedBox(height: 10.0,),
@@ -76,15 +77,20 @@ class CategoryProductState extends State<CategoryProduct> {
                             SizedBox(
                               width: 20.0,
                             ),
-                            Container(
-                                padding: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 224, 53, 110),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Icon(
-                                  Icons.add,
-                                  color: Colors.white,
-                                ))
+                            GestureDetector(
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetails(detail: ds["Detail"], image: ds["Image"], name: ds["Name"], price: ds["Price"])));
+                              },
+                              child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      color: Color.fromARGB(255, 224, 53, 110),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  )),
+                            )
                           ],
                         )
                       ],

@@ -1,4 +1,5 @@
 import 'package:edu_medix_app/pages/category_products.dart';
+import 'package:edu_medix_app/services/shared_pref.dart';
 import 'package:edu_medix_app/widget/support_widget.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
@@ -16,13 +17,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   String timeGreeting = "";
-  @override
-  void initState() {
-    super.initState();
-    print("initState called"); // Debug print
-    _updateTimeGreeting();
-  }
-
+  
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   print("initState called"); // Debug print
+  //   _updateTimeGreeting();
+  // }
 
   void _updateTimeGreeting() {
     var hour = DateTime.now().hour;
@@ -57,18 +58,38 @@ class _HomeState extends State<Home> {
     // Add more categories as needed
   ];
 
-  List Catagoryname=[
+  List Catagoryname = [
     'Medicines',
     'Beverages',
     'Toiletries',
     'Medical_Equipment'
   ];
 
+  String? name, image;
+
+  getthesharedpref() async {
+    name = await SharedPreferenceHelper().getUserName();
+    image = await SharedPreferenceHelper().getUserImage();
+    setState(() {});
+  }
+
+  ontheload() async {
+    await getthesharedpref();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    _updateTimeGreeting();
+    ontheload();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(244, 255, 255, 255),
-      body: Container(
+      body: name==null? Center(child: CircularProgressIndicator()): Container(
         margin: EdgeInsets.only(top: 70.0, left: 20.0, right: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,7 +101,7 @@ class _HomeState extends State<Home> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Hey,!",
+                      "Hey, "+name!,
                       style: AppWidget.boldTextFieldStyle(),
                     ),
                     Text(
@@ -362,8 +383,11 @@ class CatagoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> CategoryProduct(catagory: name)));
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CategoryProduct(catagory: name)));
       },
       child: Container(
         margin: EdgeInsets.only(right: 10),
