@@ -57,6 +57,13 @@ class _HomeState extends State<Home> {
     // Add more categories as needed
   ];
 
+  List Catagoryname=[
+    'Medicines',
+    'Beverages',
+    'Toiletries',
+    'Medical_Equipment'
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -169,7 +176,7 @@ class _HomeState extends State<Home> {
                         print("Building category tile for index $index");
                         return CatagoryTile(
                           image: categories[index]['image']!,
-                          name: categories[index]['name']!,
+                          name: Catagoryname[index]!,
                         );
                       },
                     ),
@@ -356,7 +363,7 @@ class CatagoryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> CategoryProduct(catagory: )));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> CategoryProduct(catagory: name)));
       },
       child: Container(
         margin: EdgeInsets.only(right: 10),

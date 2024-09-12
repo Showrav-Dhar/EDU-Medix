@@ -44,23 +44,26 @@ class CategoryProductState extends State<CategoryProduct> {
                   DocumentSnapshot ds = snapshot.data.docs[index];
                   // Add logic to return the appropriate widget for each item
                   return Container(
-                    margin: EdgeInsets.only(right: 20.0),
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+
+                    padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10)),
                     child: Column(
                       children: [
+                        SizedBox(height: 10.0,),
                         Image.network(
                           ds["Image"],
                           height: 120,
                           width: 120,
                           fit: BoxFit.cover,
                         ),
+                        SizedBox(height: 10.0,),
                         Text(
                           ds["Name"],
-                          style: AppWidget.semiboldTextFieldStyle(),
+                          style: AppWidget.semiboldTextFieldStyle().copyWith(fontSize: 15),
                         ),
+                        Spacer(),
                         Row(
                           children: [
                             Text(
@@ -103,6 +106,7 @@ class CategoryProductState extends State<CategoryProduct> {
         title: const Text('Category Products'),
       ),
       body: Container(
+        margin: EdgeInsets.only(left: 20.0,right: 20.0),
         child: Column(
           children: [
             
