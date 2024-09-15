@@ -1,15 +1,26 @@
+import 'dart:convert';
+
+import 'package:edu_medix_app/services/constant.dart';
 import 'package:edu_medix_app/widget/support_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:http/http.dart' as http;
 
 class ProductDetails extends StatefulWidget {
   String image, name, detail, price;
-  ProductDetails({required this.detail, required this.image, required this.name, required this.price});
+  ProductDetails(
+      {required this.detail,
+      required this.image,
+      required this.name,
+      required this.price});
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
+  Map<String, dynamic>? paymentIntent;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +76,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           style: AppWidget.boldTextFieldStyle(),
                         ),
                         Text(
-                          "\৳"+widget.price,
+                          "\৳" + widget.price,
                           style: TextStyle(
                             color: Color.fromARGB(255, 224, 53, 110),
                             fontSize: 23.0,
@@ -84,25 +95,29 @@ class _ProductDetailsState extends State<ProductDetails> {
                     SizedBox(
                       height: 10.0,
                     ),
-                    Text(
-                        widget.detail),
+                    Text(widget.detail),
                     SizedBox(
                       height: 90.0,
                     ),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 10.0),
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 224, 53, 110),
-                          borderRadius: BorderRadius.circular(10)),
-                      width: MediaQuery.of(context).size.width,
-                      child: Center(
-                          child: Text(
-                        "Buy Now",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold),
-                      )),
+                    GestureDetector(
+                      onTap: () {
+                        makePayment(widget.price);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 10.0),
+                        decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 224, 53, 110),
+                            borderRadius: BorderRadius.circular(10)),
+                        width: MediaQuery.of(context).size.width,
+                        child: Center(
+                            child: Text(
+                          "Buy Now",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold),
+                        )),
+                      ),
                     )
                   ],
                 ),
@@ -112,5 +127,86 @@ class _ProductDetailsState extends State<ProductDetails> {
         ),
       ),
     );
+  }
+
+  Future<void> makePayment(String amount) async {
+    try {
+      paymentIntent = await createPayementIntent(amount, 'INR');
+      await Stripe.instance
+          .initPaymentSheet(
+              paymentSheetParameters: SetupPaymentSheetParameters(
+                  paymentIntentClientSecret: paymentIntent?['client_secret'],
+                  style: ThemeMode.dark,
+                  merchantDisplayName: 'Showrav'))
+          .then((value) {});
+
+      displayPaymentSheet();
+    } catch (e, s) {
+      print('exception:$e$s');
+    }
+  }
+
+  displayPaymentSheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet().then((value) async {
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.check_circle,
+                            color: Colors.green,
+                          ),
+                          Text("Payment Successful")
+                        ],
+                      )
+                    ],
+                  ),
+                ));
+        paymentIntent = null;
+      }).onError((error, StackTrace) {
+        print("Error is : --->> $error $StackTrace");
+      });
+    } on StripeException catch (e) {
+      print("Error is :--->>> $e");
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                content: Text("Cancelled"),
+              ));
+    } catch (e) {
+      print('$e');
+    }
+  }
+
+  createPayementIntent(String amount, String currency) async {
+    try {
+      Map<String, dynamic> body = {
+        'amount': calculateAmount(amount),
+        'currency': currency,
+        'payment_method_types[]': 'cart'
+      };
+
+      var response = await http.post(
+        Uri.parse('https://api.stripe.com/v1/payment_intents'),
+        headers: {
+          'Authorization': 'Bearer $secretkey',
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: body,
+      );
+      return jsonDecode(response.body);
+    } catch (err) {
+      print('err chargin user:${err.toString()}');
+    }
+  }
+
+  calculateAmount(String amount) {
+    final calculatedAmount = (int.parse(amount) * 100);
+    return calculatedAmount.toString();
   }
 }
