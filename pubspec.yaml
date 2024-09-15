@@ -42,7 +42,7 @@ dependencies:
   shared_preferences: ^2.3.2
   image_picker: ^1.1.2
   firebase_storage: ^12.2.0
-  flutter_stripe: ^11.0.0
+  flutter_stripe: 
   http: ^1.2.2
 
 dev_dependencies:
