@@ -44,7 +44,7 @@ dependencies:
   firebase_storage: ^12.2.0
 
   http: ^1.2.2
-  flutter_stripe: 
+  # flutter_stripe: not working
 
 dev_dependencies:
   flutter_test:
