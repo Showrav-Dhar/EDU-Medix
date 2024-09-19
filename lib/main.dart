@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:edu_medix_app/Admin/add_product.dart';
 import 'package:edu_medix_app/Admin/admin_login.dart';
+import 'package:edu_medix_app/Admin/all_orders.dart';
 import 'package:edu_medix_app/pages/Order.dart';
 import 'package:edu_medix_app/pages/bottomnav.dart';
 import 'package:edu_medix_app/pages/home.dart';
@@ -54,7 +55,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: Bottomnav());
+        home: AllOrders());
 
   }
 }
