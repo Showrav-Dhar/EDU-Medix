@@ -1,8 +1,11 @@
 import 'dart:convert';
 
 import 'package:edu_medix_app/services/constant.dart';
+import 'package:edu_medix_app/services/shared_pref.dart';
 import 'package:edu_medix_app/widget/support_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,6 +23,29 @@ class ProductDetails extends StatefulWidget {
 
 class _ProductDetailsState extends State<ProductDetails> {
   Map<String, dynamic>? paymentIntent;
+
+  String? name, mail;
+
+  getthesharedpref()async{
+    name = await SharedPreferenceHelper().getUserName();
+    mail = await SharedPreferenceHelper().getUserEmail();
+    setState(() {
+      
+    });
+  }
+
+  ontheload()async{
+    await getthesharedpref();
+    setState(() {
+      
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    ontheload();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +127,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        makePayment(widget.price);
+                        // makePayment(widget.price);
+                        placeOrder();
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 10.0),
@@ -111,7 +138,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                         width: MediaQuery.of(context).size.width,
                         child: Center(
                             child: Text(
-                          "Buy Now",
+                          // "Buy Now",
+                          "Place Order",
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 20.0,
@@ -129,7 +157,33 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
   }
 
-  Future<void> makePayment(String amount) async {
+  // from claude
+  Future<void> placeOrder() async {
+  try {
+    await FirebaseFirestore.instance.collection('orders').add({
+      'productName': widget.name,
+      'productPrice': widget.price,
+      'orderDate': FieldValue.serverTimestamp(),
+      'Name':name,
+      'Email':mail,
+      'productImage': widget.image,
+      // Add more fields as needed, such as user ID, quantity, etc.
+    });
+
+    // Show success message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Order placed successfully!')),
+    );
+  } catch (e) {
+    print('Error placing order: $e');
+    // Show error message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Failed to place order. Please try again.')),
+    );
+  }
+}
+  // dumped this following code 
+  // Future<void> makePayment(String amount) async {
     // try {
     //   paymentIntent = await createPayementIntent(amount, 'INR');
     //   await Stripe.instance
@@ -144,7 +198,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     // } catch (e, s) {
     //   print('exception:$e$s');
     // }
-  }
+  // }
 
   // displayPaymentSheet() async {
   //   try {

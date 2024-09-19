@@ -1,6 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:edu_medix_app/pages/home.dart';
-import 'package:edu_medix_app/pages/order.dart';
+import 'package:edu_medix_app/pages/Order.dart';
 import 'package:edu_medix_app/pages/profile.dart';
 import 'package:flutter/material.dart';
 

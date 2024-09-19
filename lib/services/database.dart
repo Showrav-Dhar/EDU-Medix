@@ -22,5 +22,10 @@ class DatabaseMethods {
     return await FirebaseFirestore.instance.collection(catagory).snapshots();
   }
 
+  // Future orderDetails(Map<String, dynamic> userInfoMap) async {
+  //   return await FirebaseFirestore.instance
+  //       .collection("Orders")
+  //       .add(userInfoMap);
+  // }
 
 }
