@@ -97,9 +97,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          widget.name,
-                          style: AppWidget.boldTextFieldStyle(),
+                        Flexible(
+                          child: Text(
+                            widget.name,
+                            style: AppWidget.boldTextFieldStyle(),
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                         Text(
                           "\৳" + widget.price,
@@ -167,6 +171,7 @@ class _ProductDetailsState extends State<ProductDetails> {
       'Name':name,
       'Email':mail,
       'productImage': widget.image,
+      'status':"On the way!",
       // Add more fields as needed, such as user ID, quantity, etc.
     });
 
