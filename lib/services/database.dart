@@ -11,14 +11,14 @@ class DatabaseMethods {
         .set(userInfoMap);
   }
 
-  Future addProduct(Map<String, dynamic> userInfoMap, String categoryname) async {
+  Future addProduct(
+      Map<String, dynamic> userInfoMap, String categoryname) async {
     return await FirebaseFirestore.instance
         .collection(categoryname)
         .add(userInfoMap);
   }
 
-
-  Future<Stream<QuerySnapshot>> getProducts(String catagory) async{
+  Future<Stream<QuerySnapshot>> getProducts(String catagory) async {
     return await FirebaseFirestore.instance.collection(catagory).snapshots();
   }
 
@@ -28,4 +28,10 @@ class DatabaseMethods {
   //       .add(userInfoMap);
   // }
 
+  Future<Stream<QuerySnapshot>> getOrders(String email) async {
+    return await FirebaseFirestore.instance
+        .collection("orders")
+        .where("Email", isEqualTo: email)
+        .snapshots();
+  }
 }
