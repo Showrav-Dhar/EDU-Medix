@@ -11,6 +11,12 @@ class DatabaseMethods {
         .set(userInfoMap);
   }
 
+  Future addAllProducts(Map<String, dynamic> userInfoMap) async {
+    return await FirebaseFirestore.instance
+        .collection("Products")
+        .add(userInfoMap);
+  }
+
   Future addProduct(
       Map<String, dynamic> userInfoMap, String categoryname) async {
     return await FirebaseFirestore.instance
@@ -20,8 +26,9 @@ class DatabaseMethods {
 
   UpdateStatus(String id) async {
     return await FirebaseFirestore.instance
-        .collection("orders").doc(id)
-        .update({"status" : "Delivered"});
+        .collection("orders")
+        .doc(id)
+        .update({"status": "Delivered"});
   }
 
   Future<Stream<QuerySnapshot>> getProducts(String catagory) async {
@@ -29,7 +36,10 @@ class DatabaseMethods {
   }
 
   Future<Stream<QuerySnapshot>> allOrders() async {
-    return await FirebaseFirestore.instance.collection("orders").where("status", isEqualTo: "On the way!").snapshots();
+    return await FirebaseFirestore.instance
+        .collection("orders")
+        .where("status", isEqualTo: "On the way!")
+        .snapshots();
   }
 
   // Future orderDetails(Map<String, dynamic> userInfoMap) async {
@@ -43,5 +53,13 @@ class DatabaseMethods {
         .collection("orders")
         .where("Email", isEqualTo: email)
         .snapshots();
+  }
+
+  Future<QuerySnapshot> search(String updatedname) async {
+    return await FirebaseFirestore.instance
+        .collection("Products")
+        .where("SearchKey",
+            isEqualTo: updatedname.substring(0, 1).toUpperCase())
+        .get();
   }
 }
