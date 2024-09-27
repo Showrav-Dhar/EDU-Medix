@@ -104,6 +104,9 @@ class _HomeState extends State<Home> {
     }
   }
 
+  // to show all the products
+  List<DocumentSnapshot> products = [];
+
   String? name, image;
 
   getthesharedpref() async {
@@ -117,10 +120,19 @@ class _HomeState extends State<Home> {
     setState(() {});
   }
 
+  void fetchProducts() async {
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('Products').get();
+    setState(() {
+      products = querySnapshot.docs;
+    });
+  }
+
   @override
   void initState() {
     _updateTimeGreeting();
     ontheload();
+    fetchProducts();
     super.initState();
   }
 
@@ -175,7 +187,7 @@ class _HomeState extends State<Home> {
                           borderRadius: BorderRadius.circular(10)),
                       width: MediaQuery.of(context).size.width,
                       child: TextField(
-                        controller:searchcontroller,
+                        controller: searchcontroller,
                         onChanged: (value) {
                           initiateSearch(value.toUpperCase());
                         },
@@ -185,16 +197,14 @@ class _HomeState extends State<Home> {
                           hintStyle: AppWidget.lightTextFieldStyle(),
                           prefixIcon: search
                               ? GestureDetector(
-                                onTap: (){
-                                  search = false;
-                                  tempSearchStore = [];
-                                  queryResultSet = [];
-                                  searchcontroller.text = "";
-                                  setState(() {
-                                    
-                                  });
-                                },
-                                child: Icon(Icons.close))
+                                  onTap: () {
+                                    search = false;
+                                    tempSearchStore = [];
+                                    queryResultSet = [];
+                                    searchcontroller.text = "";
+                                    setState(() {});
+                                  },
+                                  child: Icon(Icons.close))
                               : Icon(Icons.search, color: Colors.black),
                         ),
                       )),
@@ -217,13 +227,13 @@ class _HomeState extends State<Home> {
                               children: [
                                 Text("Catagories",
                                     style: AppWidget.semiboldTextFieldStyle()),
-                                Text(
-                                  "View All",
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 224, 53, 110),
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w500),
-                                ),
+                                // Text(
+                                //   "View All",
+                                //   style: TextStyle(
+                                //       color: Color.fromARGB(255, 224, 53, 110),
+                                //       fontSize: 20.0,
+                                //       fontWeight: FontWeight.w500),
+                                // ),
                               ],
                             ),
                             SizedBox(
@@ -283,13 +293,13 @@ class _HomeState extends State<Home> {
                               children: [
                                 Text("All Products",
                                     style: AppWidget.semiboldTextFieldStyle()),
-                                Text(
-                                  "View All",
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 224, 53, 110),
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w500),
-                                ),
+                                // Text(
+                                //   "View All",
+                                //   style: TextStyle(
+                                //       color: Color.fromARGB(255, 224, 53, 110),
+                                //       fontSize: 20.0,
+                                //       fontWeight: FontWeight.w500),
+                                // ),
                               ],
                             ),
                             SizedBox(
@@ -345,8 +355,8 @@ class _HomeState extends State<Home> {
                                                             10)),
                                                 child: Icon(
                                                   Icons.add,
-                                                  color: const Color.fromARGB(
-                                                      255, 34, 15, 15),
+                                                  color: Color.fromARGB(
+                                                      255, 255, 255, 255),
                                                 ))
                                           ],
                                         )
@@ -559,6 +569,84 @@ class CatagoryTile extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ProductCard extends StatelessWidget {
+  final String name;
+  final String image;
+  final String price;
+
+  const ProductCard({
+    Key? key,
+    required this.name,
+    required this.image,
+    required this.price,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+              child: Image.network(
+                image,
+                fit: BoxFit.cover,
+                width: double.infinity,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(height: 4),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '৳$price',
+                      style: TextStyle(color: Colors.pink, fontWeight: FontWeight.bold),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: Colors.pink,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Icon(Icons.add, color: Colors.white, size: 20),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
