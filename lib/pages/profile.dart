@@ -1,3 +1,4 @@
+import 'package:edu_medix_app/widget/support_widget.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -10,6 +11,20 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(244, 255, 255, 255),
+        title: Text(
+          "Profile",
+          style: AppWidget.boldTextFieldStyle(),
+        ),
+      ),
+      backgroundColor: Color.fromARGB(244, 255, 255, 255),
+      body: Container(
+        child: Column(
+          children: [],
+        ),
+      ),
+    );
   }
 }
