@@ -23,7 +23,7 @@ class _OnboardingState extends State<Onboarding> {
               Padding(
                 padding: const EdgeInsets.only(left: 20.0),
                 child: Text(
-                  "Daily Meidcal\nNeeds at your\nDoorstep",
+                  "Daily Medical\nNeeds at your\nDoorstep",
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 40.00,
