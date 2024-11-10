@@ -16,5 +16,5 @@ The EDU Medix App is a cross-platform mobile application that enables users to b
 - Order Management: View and manage orders and customer details.
 
 ## Technology Stack
-- Frontend: Flutter
+- Frontend: Flutter, State Management: InheritedWidget 
 - Backend: Firebase (for authentication, database, and storage)
